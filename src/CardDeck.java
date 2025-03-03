@@ -4,14 +4,17 @@ import java.util.HashMap;
 
 public class CardDeck {
 
-    private static HashMap<String, Byte> cardDeck = new HashMap<String, Byte>();
-    private static HashMap<String, Byte> computerCards = new HashMap<String, Byte>();
-    private static HashMap<String, Byte> playerCards = new HashMap<String, Byte>();
-    //private static ArrayList<String> keyArray = new ArrayList<String>();
+//    private static HashMap<String, Byte> cardDeck = new HashMap<String, Byte>();
+//    private static HashMap<String, Byte> computerCards = new HashMap<String, Byte>();
+//    private static HashMap<String, Byte> playerCards = new HashMap<String, Byte>();
+//    //private static ArrayList<String> keyArray = new ArrayList<String>();
     private static char[] suits = {'♠', '♥', '♣', '♦'};
     private static char[] highRanks = {'J', 'Q', 'K', 'A'};
 
-    public static void Generate () {
+    public static HashMap<String, Byte>[] getCards () {
+        HashMap<String, Byte> cardDeck = new HashMap<String, Byte>();
+        HashMap<String, Byte> computerCards = new HashMap<String, Byte>();
+        HashMap<String, Byte> playerCards = new HashMap<String, Byte>();
         for (byte i = 6; i < 11; i++) {
             for (byte j = 0; j < 4; j++) {
                 String builder = Integer.toString(i) + suits[j];
@@ -29,9 +32,6 @@ public class CardDeck {
         }
         System.out.println();
 
-    }
-
-    public static HashMap<String, Byte>[] getCards() {
         HashMap<String, Byte>[] array = new HashMap[2];
 
         for (byte j = 0; j < 10; j++) {

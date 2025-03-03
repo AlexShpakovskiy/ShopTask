@@ -4,6 +4,7 @@
 
 
 import java.nio.file.LinkPermission;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,13 +12,25 @@ import java.util.Scanner;
 
 public class Main {
     private static Scanner console = new Scanner(System.in);
-
+    private static short playerCredit = 1000;
+    private static short computerCredit = 1000;
 
     public static void main(String[] args) {
+
+
         byte counter = 1;
         while (true) {
+            if (playerCredit <= 0 || computerCredit <= 0){
+                if (playerCredit > computerCredit) {
+                    System.out.println("\nYour opponent ran out of credit. Winner-Winner, chicken dinner!");
+                    break;
+                } else {
+                    System.out.println("\nYou have no credits left. Skynet always wins.");
+                    break;
+                }
+            }
             System.out.println("----------------\nRound " + counter + "\n----------------");
-            CardDeck.Generate();
+            //CardDeck.Generate();
             oneTurn();
             counter++;
         }
@@ -40,8 +53,10 @@ public class Main {
 
 
         // PLAYER
+        System.out.println("\nYour credit: " + playerCredit + "\nComputer credit: " + computerCredit);
 
-        while (true) {
+        for (byte i = 0; i < 10; i++) {
+
             System.out.println("\nYour board:\n" +
                     StrBuilder.builder(playerOutput) + " | " + playerScore);
             if (console.hasNextByte()) {
@@ -86,7 +101,7 @@ public class Main {
 
         // COMPUTER
 
-        while (true) {
+        for (byte i = 0; i < 10; i++) {
             try {
                 Thread.sleep(800);
             } catch (InterruptedException e) {
@@ -97,6 +112,7 @@ public class Main {
 
             byte input = (byte) (Math.random() * 10);
             if (computerUsed.contains(input) == false) {
+                computerUsed.add(input);
 
                 String card = computerCards.keySet().toArray()[input].toString();
                 computerOutput[input] = "[" + card + "]";
@@ -130,21 +146,40 @@ public class Main {
             }
         }
 
-        System.out.println(" | Score: " + playerScore);
-        // FINAL
+        System.out.println(" | Score: " + computerScore);
 
         System.out.println("\nYour score: " + playerScore + "\nComputer score: " + computerScore);
 
+        // FINAL
+
+
+
         if (computerScore > playerScore && computerScore <= 21) {
             System.out.println("COMPUTER WON!");
+            playerCredit -= 100;
+            computerCredit += 100;
         } else if (playerScore > computerScore && playerScore <= 21) {
             System.out.println("YOU WON!");
+            playerCredit += 100;
+            computerCredit -= 100;
         } else if (playerScore == computerScore || (playerScore > 21 && computerScore > 21)) {
             System.out.println("DRAW!");
         } else if (computerScore > 21 && playerScore <= 21) {
             System.out.println("YOU WON!");
+            playerCredit += 100;
+            computerCredit -= 100;
         } else if (playerScore > 21 && computerScore <= 21) {
             System.out.println("COMPUTER WON!");
+            playerCredit -= 100;
+            computerCredit += 100;
         }
+
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
